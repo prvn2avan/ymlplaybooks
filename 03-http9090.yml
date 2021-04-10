@@ -1,0 +1,24 @@
+---
+- name: update ALLservers
+  hosts: all
+  become: yes
+  handlers:
+  - name: httpsrestart
+    service:
+      name: httpd
+      state: restarted
+      
+  tasks:
+  - name: ensure SELinux is permissive
+    selinux:
+      policy: targeted
+      state: permissive
+
+  - name: ensure port 8081 is updated
+    copy:
+      src: httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+    notify:
+    - httpsrestart
+
+... 
