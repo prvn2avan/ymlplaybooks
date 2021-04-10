@@ -1,0 +1,23 @@
+---
+- name: update web servers
+  hosts: web
+  handlers:
+  - name: content update
+    copy:
+      dest: /home/centos/app/app.conf
+      content: my app configuration
+ 
+  tasks:
+  - name: ensure directory is created
+    file:
+      path: /home/centos/app
+      state: directory
+          
+  - name: ensure web file is updated
+    copy:
+      dest: /home/centos/app/web.conf
+      content: my app to delete configuration            
+         
+    notify:
+    - content update
+...
